@@ -13,14 +13,16 @@ app.use(require('cors')());
 app.use(express.json());
 app.use(cookieParser());
 app.use('/api', api);
-if (config.PROD) {
-    app.use(express.static(require('path').resolve(__dirname + '/../client/build')));
-    app.use('/*', (req, res) =>
-        res.sendFile(
-            require('path').resolve(__dirname + '/../client/build/index.html')
-        )
-    );
-}
+
+app.use(
+    express.static(require('path').resolve(__dirname + '/../client/build'))
+);
+app.use('/*', (req, res) =>
+    res.sendFile(
+        require('path').resolve(__dirname + '/../client/build/index.html')
+    )
+);
+
 app.listen(config.PORT, err => {
     if (log.err(err)) return;
     log.log('Listening to port ' + config.PORT + '...');
