@@ -9,6 +9,7 @@ const app = express();
 
 process.on('uncaughtException', err => log.err(err));
 process.on('unhandledRejection', err => log.err(err));
+app.use(require('cors')());
 app.use(express.json());
 app.use(cookieParser());
 app.use('/api', api);
