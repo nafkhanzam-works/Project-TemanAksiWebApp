@@ -12,8 +12,8 @@ process.on('unhandledRejection', err => log.err(err));
 app.use(express.json());
 app.use(cookieParser());
 app.use('/api', api);
-if (config.PROD) {
-    app.use(express.static('../client/build'));
+if (true) {
+    app.use(express.static(require('path').resolve(__dirname + '/../client/build')));
     app.use('/*', (req, res) =>
         res.sendFile(
             require('path').resolve(__dirname + '/../client/build/index.html')
