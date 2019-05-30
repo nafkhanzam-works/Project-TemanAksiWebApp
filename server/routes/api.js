@@ -24,6 +24,10 @@ router.use((req, res, next) => {
         });
     })
 });
+router.use('/logout', async (req, res) => {
+    if (!req.user) return log.status(res, 400, 'You\'re not logged in.');
+    res.cookie(config.AUTH, null).send('Logged out!');
+});
 router.use('/register', async (req, res) => {
     if (req.user) return log.status(res, 400, 'You\'re already logged in.');
     User.create(schemas.getSchemaObject(req.body, User), (err, user) => {
