@@ -8,7 +8,7 @@ const schemas = require('../utils/schemas');
 
 const router = express.Router();
 
-const login = function(req, res) {
+const login = async function(req, res) {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
     if (!user) return log.status(res, 400, 'Email is not registered.');
