@@ -1,21 +1,25 @@
+import { AppBar, Button, Toolbar, Typography, Paper } from '@material-ui/core';
 import React from 'react';
-import { BrowserRouter, Route, Link, Switch } from 'react-router-dom';
-import Home from './routes/Home';
-import AuthForm from './routes/AuthForm';
+import { BrowserRouter, Link, Route, Switch } from 'react-router-dom';
 import AddSchool from './routes/AddSchool';
+import AuthForm from './routes/AuthForm';
+import Home from './routes/Home';
 
 export default function() {
     return (
-        <div>
+        <BrowserRouter>
             <AppBar color="primary" position="static">
                 <Toolbar>
                     <Typography
                         variant="h6"
                         color="inherit"
-                        style={{ flexGrow: 1 }}
+                        style={{ textDecoration: 'none', paddingRight: 20 }}
+                        component={Link}
+                        to='/'
                     >
                         Teman Aksi
                     </Typography>
+                    <div style={{ flexGrow: 1 }} />
                     <Button
                         variant="contained"
                         color="primary"
@@ -35,20 +39,20 @@ export default function() {
                     </Button>
                 </Toolbar>
             </AppBar>
-            <BrowserRouter>
+            <Paper style={{ padding: 20 }}>
                 <Switch>
                     <Route path="/login" component={() => <AuthForm login />} />
                     <Route path="/register" component={AuthForm} />
                     <Route path="/addschool" component={AddSchool} />
                     <Route exact path="/" component={Home} />
-                    <>
+                    <div>
                         <h1>404 Not Found!</h1>
                         <h2>
                             <Link to="/">Go to home page</Link>
                         </h2>
-                    </>
+                    </div>
                 </Switch>
-            </BrowserRouter>
-        </div>
+            </Paper>
+        </BrowserRouter>
     );
 }
