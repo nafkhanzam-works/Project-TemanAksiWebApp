@@ -1,16 +1,15 @@
 import React from 'react';
-import Axios from 'axios';
 import { Redirect } from 'react-router-dom';
+import LoggedIn from './states/LoggedIn';
 
 const AddSchoolForm = () => {
-    let isLoggedIn = false;
-    Axios
-        .get('api/isloggedin')
-        .then(res => {
-            isLoggedIn = res;
-        })
-        .catch(err => console.log(err));
-    return isLoggedIn ? <div>tambah sekolah form</div> : <Redirect to='/login?redirect=addschool'/>;
-}
- 
+    const [isLoggedIn,, loading] = LoggedIn.apply(this);
+    if (loading) return loading;
+    return isLoggedIn ? (
+        <div>tambah sekolah form</div>
+    ) : (
+        <Redirect to="/login?redirect=addschool" />
+    );
+};
+
 export default AddSchoolForm;

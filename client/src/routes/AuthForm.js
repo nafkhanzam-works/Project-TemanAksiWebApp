@@ -1,18 +1,11 @@
 import React from 'react';
-import axios from 'axios';
-import Register from './Register';
+import { Redirect } from 'react-router-dom';
 import Login from './Login';
-import Profile from './Profile';
+import Register from './Register';
+import LoggedIn from './states/LoggedIn';
 
 function AuthForm(props) {
-    let isLoggedIn = false;
-    axios
-        .get('api/isloggedin')
-        .then(res => {
-            isLoggedIn = res;
-        })
-        .catch(err => console.log(err));
-    return isLoggedIn ? <Profile /> : props.login ? <Login /> : <Register />;
+    return LoggedIn.apply(this)[0] ? <Redirect to='/profile' /> : props.login ? <Login /> : <Register />;
 }
 
 export default AuthForm;

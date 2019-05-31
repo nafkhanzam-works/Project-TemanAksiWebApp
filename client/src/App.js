@@ -4,6 +4,7 @@ import { BrowserRouter, Link, Route, Switch } from 'react-router-dom';
 import AddSchool from './routes/AddSchool';
 import AuthForm from './routes/AuthForm';
 import Home from './routes/Home';
+import Profile from './routes/Profile';
 
 export default function() {
     return (
@@ -44,6 +45,7 @@ export default function() {
                     <Route path="/login" component={() => <AuthForm login />} />
                     <Route path="/register" component={AuthForm} />
                     <Route path="/addschool" component={AddSchool} />
+                    <Route path="/profile" component={Profile} />
                     <Route exact path="/" component={Home} />
                     <div>
                         <h1>404 Not Found!</h1>
