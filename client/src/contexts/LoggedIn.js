@@ -1,15 +1,15 @@
-import Axios from "axios";
+import axios from "axios";
 import React from 'react';
 import { Typography } from "@material-ui/core";
 
 export default function() {
-    const [loggedIn, setLoggedIn] = React.useState(null);
     const [error, setError] = React.useState(false);
+    const [user, setUser] = React.useState(null);
     React.useEffect(() => {
         let isMounted = true;
-        Axios.get('api/isloggedin')
+        axios.get('api/me')
             .then(res => {
-                if (isMounted) setLoggedIn(res.data);
+                if (isMounted) setUser(res.data);
             })
             .catch(() => {
                 if (isMounted) setError(true);
@@ -18,10 +18,10 @@ export default function() {
             isMounted = false;
         };
     });
-    return { loggedIn, error };
+    return { user, error };
 }
 export const loadingComponent = function(auth) {
-    if (auth.loggedIn === null || auth.error)
+    if (auth.user === null || auth.error)
         return (
             <Typography>
                 {auth.error

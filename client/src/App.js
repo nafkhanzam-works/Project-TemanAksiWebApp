@@ -30,7 +30,7 @@ export default function() {
                         Teman Aksi
                     </Typography>
                     <div style={{ flexGrow: 1 }} />
-                    {auth.loggedIn === null ? null : auth.loggedIn ? (
+                    {auth.user === null ? null : auth.user ? (
                         <>
                             <Button
                                 variant="contained"

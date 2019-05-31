@@ -35,8 +35,8 @@ router.use('/register', async (req, res) => {
         login(req, res);
     });
 });
-router.use('/isloggedin', (req, res) => {
-    res.send(!!req.user);
+router.use('/me', (req, res) => {
+    res.send(req.user);
 })
 router.use('/login', async (req, res) => {
     if (req.user) return log.status(res, 400, 'You\'re already logged in.');

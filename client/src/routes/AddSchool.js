@@ -6,7 +6,7 @@ const AddSchoolForm = () => {
     const auth = LoggedIn();
     const loading = loadingComponent(auth);
     if (loading) return loading;
-    return auth.loggedIn ? (
+    return auth.user ? (
         <div>tambah sekolah form</div>
     ) : (
         <Redirect to="/login?redirect=addschool" /> // add props no check if it's loggedin or not (?)

@@ -15,7 +15,7 @@ const Login = () => {
     const auth = LoggedIn();
     const loading = loadingComponent(auth);
     if (loading) return loading;
-    if (auth.loggedIn) return <Redirect to="/profile" />;
+    if (auth.user) return <Redirect to="/profile" />;
     return (
         <div>
             <Typography>Login to Teman Aksi</Typography>
