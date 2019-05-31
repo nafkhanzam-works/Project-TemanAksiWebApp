@@ -1,14 +1,15 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
-import LoggedIn from './states/LoggedIn';
+import LoggedIn, { loadingComponent } from '../contexts/LoggedIn';
 
 const AddSchoolForm = () => {
-    const [isLoggedIn,, loading] = LoggedIn.apply(this);
+    const auth = LoggedIn();
+    const loading = loadingComponent(auth);
     if (loading) return loading;
-    return isLoggedIn ? (
+    return auth.loggedIn ? (
         <div>tambah sekolah form</div>
     ) : (
-        <Redirect to="/login?redirect=addschool" />
+        <Redirect to="/login?redirect=addschool" /> // add props no check if it's loggedin or not (?)
     );
 };
 

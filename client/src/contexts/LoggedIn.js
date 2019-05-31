@@ -3,29 +3,30 @@ import React from 'react';
 import { Typography } from "@material-ui/core";
 
 export default function() {
-    const [isLoggedIn, setIsLoggedIn] = React.useState(null);
+    const [loggedIn, setLoggedIn] = React.useState(null);
     const [error, setError] = React.useState(false);
-    const isMounted = React.useRef(true);
     React.useEffect(() => {
+        let isMounted = true;
         Axios.get('api/isloggedin')
             .then(res => {
-                if (isMounted.current) setIsLoggedIn(res.data);
+                if (isMounted) setLoggedIn(res.data);
             })
             .catch(() => {
-                if (isMounted.current) setError(true);
+                if (isMounted) setError(true);
             });
         return () => {
-            isMounted.current = false;
+            isMounted = false;
         };
     });
-    let loading = null;
-    if (isLoggedIn === null)
-        loading = (
+    return { loggedIn, error };
+}
+export const loadingComponent = function(auth) {
+    if (auth.loggedIn === null || auth.error)
+        return (
             <Typography>
-                {error
+                {auth.error
                     ? "Couldn't connect to the server, try to refresh the page!"
                     : 'Loading...'}
             </Typography>
         );
-    return [isLoggedIn, error, loading];
-}
+};

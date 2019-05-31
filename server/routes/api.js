@@ -12,7 +12,7 @@ const login = async function(req, res) {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
     if (!user) return log.status(res, 400, 'Email is not registered.');
-    if (!user.comparePassword(password)) return log.status(res, 400, 'Password incorrect.');
+    if (!await user.comparePassword(password)) return log.status(res, 400, 'Password incorrect.');
     res.cookie(config.AUTH, user.generateToken()).send(user);
 }
 router.use((req, res, next) => {
