@@ -57,6 +57,14 @@ const Register = () => {
                 variant="outlined"
             />
             <br />
+            {value.error ? (
+                <>
+                    <Typography style={{ color: 'red' }}>
+                        {value.error}
+                    </Typography>
+                    <br />
+                </>
+            ) : null}
             <Button
                 variant="contained"
                 color="primary"
