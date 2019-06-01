@@ -14,10 +14,52 @@ const Register = () => {
         error: false,
         loading: false
     });
-    const auth = LoggedIn();
-    const loading = loadingComponent(auth);
+    const [error, setError] = React.useState(false);
+    const [user, setUser] = React.useState(null);
+    let mounted = React.useRef(true);
+    if (mounted.current)
+        LoggedIn((err, user) => {
+            setError(err);
+            setUser(user);
+            mounted.current = false;
+        });
+    const loading = loadingComponent({ user, error });
     if (loading) return loading;
-    if (auth.user) return <Redirect to="/profile" />;
+    if (user) return <Redirect to="/profile" />;
+    const doRegister = (e, enter) => {
+        if (!enter || (enter && e.key === 'Enter')) {
+            setValue(() => {
+                return { ...value, loading: true };
+            });
+            if (value.password !== value.password2) {
+                setValue(() => {
+                    return {
+                        ...value,
+                        loading: false,
+                        error: "Password doesn't match!"
+                    };
+                });
+            } else {
+                const { name, email, password } = value;
+                axios
+                    .post('/api/register', {
+                        name,
+                        email,
+                        password
+                    })
+                    .then(res => {
+                        if (res.status === 200) {
+                            redirect();
+                        } else throw new Error(res);
+                    })
+                    .catch(err => {
+                        setValue(() => {
+                            return { ...value, error: err.response.data };
+                        });
+                    });
+            }
+        }
+    };
     return (
         <div>
             <Typography>Register to Teman Aksi</Typography>
@@ -32,6 +74,8 @@ const Register = () => {
             <TextField
                 error={value.error}
                 label="Email"
+                type="email"
+                autoComplete="email"
                 onChange={e => setValue({ ...value, email: e.target.value })}
                 margin="normal"
                 variant="outlined"
@@ -50,6 +94,7 @@ const Register = () => {
                 error={value.error}
                 label="Confirm Password"
                 type="password"
+                onKeyDown={e => doRegister(e, true)}
                 onChange={e =>
                     setValue({ ...value, password2: e.target.value })
                 }
@@ -68,23 +113,7 @@ const Register = () => {
             <Button
                 variant="contained"
                 color="primary"
-                onClick={() => {
-                    setValue(() => {return { ...value, loading: true }});
-                    if (value.password !== value.password2) {
-                        setValue(() => {return { ...value, loading: false, error: 'Password doesn\'t match!' }});
-                    } else {
-                        const { name, email, password } = value;
-                        axios.post('/api/register', {
-                            name, email, password
-                        }).then((res) => {
-                            if (res.status === 200) {
-                                redirect();
-                            } else throw new Error(res);
-                        }).catch((err) => {
-                            setValue(() => {return { ...value, error: err.response.data }});
-                        })
-                    }
-                }}
+                onClick={doRegister}
                 disabled={value.loading}
             >
                 {value.loading ? 'Registering...' : 'Register'}

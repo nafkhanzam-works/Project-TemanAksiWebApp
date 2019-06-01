@@ -1,24 +1,27 @@
-import axios from "axios";
+import axios from 'axios';
 import React from 'react';
-import { Typography } from "@material-ui/core";
+import { Typography } from '@material-ui/core';
 
-export default function() {
-    const [error, setError] = React.useState(false);
-    const [user, setUser] = React.useState(null);
-    React.useEffect(() => {
-        let isMounted = true;
-        axios.get('api/me')
-            .then(res => {
-                if (isMounted) setUser(res.data);
-            })
-            .catch(() => {
-                if (isMounted) setError(true);
-            });
-        return () => {
-            isMounted = false;
-        };
-    });
-    return { user, error };
+export default function(cb) {
+    axios
+        .get('api/me')
+        .then(res => {
+            cb(false, res.data);
+        })
+        .catch(err => {
+            cb(err, null);
+        });
+}
+
+export const getUser = function(cb, _id) {
+    axios
+        .post('api/db/user/findById', { _id })
+        .then(res => {
+            cb(false, res.data);
+        })
+        .catch(err => {
+            cb(err, null);
+        });
 }
 export const loadingComponent = function(auth) {
     if (auth.user === null || auth.error)

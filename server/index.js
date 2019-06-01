@@ -30,7 +30,7 @@ app.listen(config.PORT, err => {
 
 mongoose.connect(
     config.DATABASE,
-    { useNewUrlParser: true, useCreateIndex: true },
+    { useNewUrlParser: true, useCreateIndex: true, useFindAndModify: false },
     err => {
         if (log.err(err)) return;
         log.log('Connected to MongoDB!');

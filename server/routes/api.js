@@ -1,10 +1,10 @@
 const express = require('express')
-const mongoose = require('mongoose')
 const _ = require('lodash');
 const log = require('../utils/log')
 const config = require('../config/config');
 const User = require('../models/user');
 const schemas = require('../utils/schemas');
+const School = require('../models/school');
 
 const router = express.Router();
 
@@ -24,11 +24,11 @@ router.use((req, res, next) => {
         });
     })
 });
-router.use('/logout', async (req, res) => {
+router.use('/logout', (req, res) => {
     if (!req.user) return log.status(res, 400, 'You\'re not logged in.');
     res.cookie(config.AUTH, null).send('Logged out!');
 });
-router.use('/register', async (req, res) => {
+router.use('/register', (req, res) => {
     if (req.user) return log.status(res, 400, 'You\'re already logged in.');
     User.create(schemas.getSchemaObject(req.body, User), (err, user) => {
         if (log.res(res, 400, err)) return;
@@ -37,26 +37,63 @@ router.use('/register', async (req, res) => {
 });
 router.use('/me', (req, res) => {
     res.send(req.user);
+});
+router.use('/registerschool', (req, res) => {
+    if (!req.user) return log.status(res, 400, 'You\'re not logged in!');
+    req.body.userId = req.user._id;
+    School.create(schemas.getSchemaObject(req.body, School), (err, school) => {
+        if (log.res(res, 400, err)) return;
+        res.send(school);
+    });
+});
+router.use('/removemyschool', (req, res) => {
+    if (!req.user) return log.status(res, 400, 'You\'re not logged in!');
+    const { schoolId } = req.body;
+    School.findById(schoolId, (err, school) => {
+        if (log.res(res, 400, err)) return;
+        if (!school) return res.send('Not found!');
+        if (!req.user._id.equals(school.userId))
+            return log.res(res, 400, new Error('You\'re not authorized!'));
+        School.findByIdAndRemove(schoolId, (err, school) => {
+            if (log.res(res, 400, err)) return;
+            res.send(school);
+        });
+    })
 })
-router.use('/login', async (req, res) => {
+router.use('/schools/:cond', (req, res) => {
+    if (!req.user && req.params.cond === 'me') return log.status(res, 400, 'You\'re not logged in!');
+    const condition = {};
+    if (req.params.cond === 'me')
+        condition.userId = req.user._id;
+    School.find(condition, (err, list) => {
+        if (log.res(res, 400, err)) return;
+        res.send(list);
+    });
+});
+router.use('/login', (req, res) => {
     if (req.user) return log.status(res, 400, 'You\'re already logged in.');
     login(req, res);
 });
 router.use('/db/:collection/:query', (req, res) => {
-    if (!req.user) return log.status(res, 403);
     const b = req.body;
     const q = req.query;
     const qq = req.params.query;
     const col = req.params.collection;
     try {
         const Model = require('../models/' + col);
-        if (!config.USER_QUERIES.includes(qq) && !config.except(col, qq)) return log.res(res, 404, true);
+        if (!config.USER_QUERIES.includes(qq) && !config.except(req.user, col, qq)) return log.res(res, 404, true);
         switch (qq) {
             case 'create':
                 Model[qq](schemas.getSchemaObject(b, Model), (err, doc) => {
                     if (log.res(res, 400, err)) return;
                     res.send(doc);
                 });
+                break;
+            case 'findById':
+                Model[qq](b._id, (err, doc) => {
+                    if (log.res(res, 400, err)) return;
+                    res.send(doc);
+                })
                 break;
             default:
                 var opt = {};

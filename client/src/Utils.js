@@ -1,3 +1,3 @@
-export const redirect = function() {
-    window.location.href = '/' + (new URL(window.location.href).searchParams.get('redirect') || '');
+export const redirect = function(url) {
+    window.location.href = '/' + (url || new URL(window.location.href).searchParams.get('redirect') || '');
 }

@@ -10,18 +10,56 @@ const Login = () => {
         email: '',
         password: '',
         loading: false,
-        error: false,
+        error: false
     });
-    const auth = LoggedIn();
-    const loading = loadingComponent(auth);
+    const [error, setError] = React.useState(false);
+    const [user, setUser] = React.useState(null);
+    let mounted = React.useRef(true);
+    if (mounted.current)
+        LoggedIn((err, user) => {
+            setError(err);
+            setUser(user);
+            mounted.current = false;
+        });
+    const loading = loadingComponent({ user, error });
     if (loading) return loading;
-    if (auth.user) return <Redirect to="/profile" />;
+    if (user) return <Redirect to="/profile" />;
+    const doLogin = (e, enter) => {
+        if (!enter || (enter && e.key === 'Enter')) {
+            setValue({ ...value, loading: true });
+            axios
+                .post('/api/login', {
+                    email: value.email,
+                    password: value.password
+                })
+                .then(res => {
+                    if (res.status === 200) redirect();
+                    else throw new Error(res);
+                })
+                .catch(err => {
+                    if (err.response.status >= 500)
+                        setValue({
+                            ...value,
+                            error: err.response.data,
+                            loading: false
+                        });
+                    else
+                        setValue({
+                            ...value,
+                            error: err.response.data,
+                            loading: false
+                        });
+                });
+        }
+    };
     return (
         <div>
             <Typography>Login to Teman Aksi</Typography>
             <TextField
                 error={!!value.error}
                 label="Email"
+                type="email"
+                autoComplete="email"
                 value={value.email}
                 onChange={e => setValue({ ...value, email: e.target.value })}
                 margin="normal"
@@ -33,6 +71,7 @@ const Login = () => {
                 label="Password"
                 value={value.password}
                 type="password"
+                onKeyDown={e => doLogin(e, true)}
                 onChange={e => setValue({ ...value, password: e.target.value })}
                 margin="normal"
                 variant="outlined"
@@ -49,33 +88,7 @@ const Login = () => {
             <Button
                 variant="contained"
                 color="primary"
-                onClick={() => {
-                    setValue({ ...value, loading: true });
-                    axios.post('/api/login', {
-                        email: value.email,
-                        password: value.password
-                    })
-                        .then(res => {
-                            if (res.status === 200)
-                                redirect();
-                            else
-                                throw new Error(res);
-                        })
-                        .catch(err => {
-                            if (err.response.status >= 500)
-                                setValue({
-                                    ...value,
-                                    error: err.response.data,
-                                    loading: false
-                                });
-                            else
-                                setValue({
-                                    ...value,
-                                    error: err.response.data,
-                                    loading: false
-                                });
-                        })
-                }}
+                onClick={doLogin}
                 disabled={value.loading}
             >
                 {value.loading ? 'Logging in...' : 'Login'}

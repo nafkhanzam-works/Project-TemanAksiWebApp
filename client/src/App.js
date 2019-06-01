@@ -12,7 +12,13 @@ import { redirect } from './Utils';
 
 export default function() {
     const [state, setState] = React.useState({});
-    let auth = LoggedIn();
+    const [user, setUser] = React.useState(null);
+    let mounted = React.useRef(true);
+    if (mounted.current)
+        LoggedIn((err, user) => {
+            setUser(user);
+            mounted.current = false;
+        });
     return (
         <BrowserRouter>
             <AppBar color="primary" position="static">
@@ -30,7 +36,7 @@ export default function() {
                         Teman Aksi
                     </Typography>
                     <div style={{ flexGrow: 1 }} />
-                    {auth.user === null ? null : auth.user ? (
+                    {user === null ? null : user ? (
                         <>
                             <Button
                                 variant="contained"
@@ -52,7 +58,7 @@ export default function() {
                                         .catch(() =>
                                             setState({
                                                 ...state,
-                                                loggingOut: false
+                                                loggingOut: false // TODO: add connection error message!
                                             })
                                         );
                                 }}
@@ -84,7 +90,7 @@ export default function() {
                     )}
                 </Toolbar>
             </AppBar>
-            <Paper style={{ padding: 20 }}>
+            <Paper square style={{ padding: 20 }}>
                 <Switch>
                     <Route path="/login" component={Login} />
                     <Route path="/register" component={Register} />
