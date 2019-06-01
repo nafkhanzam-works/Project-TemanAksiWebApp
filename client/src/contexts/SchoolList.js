@@ -15,7 +15,13 @@ export default function(cb, all) {
 }
 export const getFormattedList = function(school, profile, onDelete) {
     return school.list === null || school.list === undefined ? (
-        <Typography>{school.error ? school.error.response.data : 'Loading...'}</Typography>
+        <Typography>
+            {school.error
+                ? school.error.response
+                    ? school.error.response.data
+                    : "Couldn't connect to the server! Try to refresh the page."
+                : 'Loading...'}
+        </Typography>
     ) : school.list.length === 0 ? (
         <Typography>Tidak ada.</Typography>
     ) : (
