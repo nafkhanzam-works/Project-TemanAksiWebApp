@@ -29,7 +29,7 @@ const Profile = () => {
         <>
             <Typography>
                 <b>
-                    profile page (sementara):
+                    Profile Page (sementara):
                     <br />
                     Nama:
                 </b>{' '}

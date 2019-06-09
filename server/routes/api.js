@@ -59,7 +59,7 @@ router.use('/removemyschool', (req, res) => {
             res.send(school);
         });
     })
-})
+});
 router.use('/schools/:cond', (req, res) => {
     if (!req.user && req.params.cond === 'me') return log.status(res, 400, 'You\'re not logged in!');
     const condition = {};
@@ -74,6 +74,8 @@ router.use('/login', (req, res) => {
     if (req.user) return log.status(res, 400, 'You\'re already logged in.');
     login(req, res);
 });
+
+// Deprecated
 router.use('/db/:collection/:query', (req, res) => {
     const b = req.body;
     const q = req.query;

@@ -23,7 +23,7 @@ export const getFormattedList = function(school, profile, onDelete) {
                 : 'Loading...'}
         </Typography>
     ) : school.list.length === 0 ? (
-        <Typography>Tidak ada.</Typography>
+        <Typography>{profile ? 'Tidak ada.' : 'Belum ada sekolah untuk saat ini.'}</Typography>
     ) : (
         <ul>
             {school.list.map(school => (
