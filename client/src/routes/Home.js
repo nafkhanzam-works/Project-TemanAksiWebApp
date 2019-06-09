@@ -1,16 +1,12 @@
 import { Button, Paper, Typography } from '@material-ui/core';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import SchoolList, { getFormattedList } from '../contexts/SchoolList';
+import { getFormattedList } from '../components/SchoolList';
+import { apiGetCB } from '../Utils';
 
 const Home = () => {
     const [school, setSchool] = React.useState({});
-    let mountedList = React.useRef(true);
-    if (mountedList.current)
-        SchoolList((error, list) => {
-            setSchool({ error, list });
-            mountedList.current = false;
-        }, true);
+    React.useEffect(apiGetCB('api/schools/all', (error, list) => setSchool({ error, list })), []);
     return (
         <React.Fragment>
             <Typography variant="h6" style={{ marginBottom: 10, marginTop: 10 }}>
@@ -35,12 +31,7 @@ const Home = () => {
                 <b>Siap memberi bantuan?</b>
             </Typography>
             <Paper style={{ padding: 10, maxHeight: 500, overflowY: 'auto' }}>
-                {getFormattedList(school, false, () => {
-                    setSchool({});
-                    SchoolList((error, list) => {
-                        setSchool({ error, list });
-                    });
-                })}
+                {getFormattedList(school)}
             </Paper>
             <Typography variant="h6" style={{ margin: '10px 0px 10px 0px' }}>
                 <b>Ingin menambahkan sekolah Anda?</b>

@@ -1,24 +1,18 @@
 import { AppBar, Button, Paper, Toolbar, Typography } from '@material-ui/core';
+import axios from 'axios';
 import React from 'react';
 import { BrowserRouter, Link, Route, Switch } from 'react-router-dom';
-import LoggedIn from './contexts/LoggedIn';
 import AddSchool from './routes/AddSchool';
 import Home from './routes/Home';
 import Login from './routes/Login';
 import Profile from './routes/Profile';
 import Register from './routes/Register';
-import axios from 'axios';
-import { redirect } from './Utils';
+import { redirect, apiGetCB } from './Utils';
 
 export default function() {
     const [state, setState] = React.useState({});
     const [user, setUser] = React.useState(null);
-    let mounted = React.useRef(true);
-    if (mounted.current)
-        LoggedIn((err, user) => {
-            setUser(user);
-            mounted.current = false;
-        });
+    React.useEffect(apiGetCB('api/me', (err, user) => setUser(user)), []);
     return (
         <BrowserRouter>
             <AppBar color="primary" position="static">

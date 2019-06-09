@@ -1,9 +1,8 @@
 import { Button, TextField, Typography } from '@material-ui/core';
-import axios from 'axios';
 import React from 'react';
 import { Redirect } from 'react-router-dom';
-import LoggedIn, { loadingComponent } from '../contexts/LoggedIn';
-import { redirect } from '../Utils';
+import { redirect, apiGet, loadingComponent, res200 } from '../Utils';
+import Axios from 'axios';
 
 const Login = () => {
     const [value, setValue] = React.useState({
@@ -13,43 +12,29 @@ const Login = () => {
         error: false
     });
     const [error, setError] = React.useState(false);
-    const [user, setUser] = React.useState(null);
-    let mounted = React.useRef(true);
-    if (mounted.current)
-        LoggedIn((err, user) => {
-            setError(err);
-            setUser(user);
-            mounted.current = false;
-        });
-    const loading = loadingComponent({ user, error });
-    if (loading) return loading;
-    if (user) return <Redirect to="/profile" />;
+	const [user, setUser] = React.useState(null);
+	React.useEffect(apiGet('api/me', setUser, setError), []);
+	const loading = loadingComponent(user, error);
+	if (loading) return loading;
+	if (user) return <Redirect to="/profile" />;
     const doLogin = (e, enter) => {
         if (!enter || (enter && e.key === 'Enter')) {
             setValue({ ...value, loading: true });
-            axios
-                .post('/api/login', {
-                    email: value.email,
-                    password: value.password
-                })
-                .then(res => {
-                    if (res.status === 200) redirect();
-                    else throw new Error(res);
-                })
-                .catch(err => {
-                    if (err.response.status >= 500)
-                        setValue({
-                            ...value,
-                            error: err.response.data,
-                            loading: false
-                        });
-                    else
-                        setValue({
-                            ...value,
-                            error: err.response.data,
-                            loading: false
-                        });
-                });
+            (async () => {
+                try {
+                    const res = await Axios.post('api/login', {
+                        email: value.email,
+                        password: value.password
+                    });
+                    if (res200(res)) redirect();
+                } catch (err) {
+                    setValue({
+                        ...value,
+                        error: err.response.data,
+                        loading: false
+                    });
+                }
+            })();
         }
     };
     return (
