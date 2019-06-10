@@ -8,6 +8,7 @@ import Login from './routes/Login';
 import Profile from './routes/Profile';
 import Register from './routes/Register';
 import { redirect, apiGetCB } from './Utils';
+import SchoolProfile from './routes/SchoolProfile';
 
 export default function() {
     const [state, setState] = React.useState({});
@@ -90,6 +91,7 @@ export default function() {
                     <Route path="/register" component={Register} />
                     <Route path="/addschool" component={AddSchool} />
                     <Route path="/profile" component={Profile} />
+                    <Route path="/school/:name" component={SchoolProfile} />
                     <Route exact path="/" component={Home} />
                     <div>
                         <h1>404 Not Found!</h1>

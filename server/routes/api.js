@@ -74,6 +74,15 @@ router.use('/login', (req, res) => {
     if (req.user) return log.status(res, 400, 'You\'re already logged in.');
     login(req, res);
 });
+router.use('/getschool/:name', async (req, res) => {
+    try {
+        const school = await School.findOne({ name: req.params.name });
+        if (!school) return log.status(res, 404, 'School not found!');
+        res.send(school);
+    } catch (err) {
+        log.res(res, 400, err);
+    }
+});
 router.use('/db/:collection/:query', (req, res) => {
     const b = req.body;
     const q = req.query;

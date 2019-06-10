@@ -1,7 +1,7 @@
 import { Button, Paper, Typography } from '@material-ui/core';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { getFormattedList } from '../components/SchoolList';
+import SchoolList from '../components/SchoolList';
 import { apiGetCB } from '../Utils';
 
 const Home = () => {
@@ -31,7 +31,7 @@ const Home = () => {
                 <b>Siap memberi bantuan?</b>
             </Typography>
             <Paper style={{ padding: 10, maxHeight: 500, overflowY: 'auto' }}>
-                {getFormattedList(school)}
+                <SchoolList school={school} />
             </Paper>
             <Typography variant="h6" style={{ margin: '10px 0px 10px 0px' }}>
                 <b>Ingin menambahkan sekolah Anda?</b>

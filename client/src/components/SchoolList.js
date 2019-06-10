@@ -1,22 +1,13 @@
 import React from 'react';
 import ASchoolList from './ASchoolList';
 import { Typography } from '@material-ui/core';
-import Axios from 'axios';
 
-export default function(cb, all) {
-	Axios.get('api/schools/' + (all ? 'all' : 'me'))
-		.then(res => {
-			cb(false, res.data);
-		})
-		.catch(err => {
-			cb(err, null);
-		});
-}
-export const getFormattedList = function(school, onDelete) {
+export default function(props) {
+    const { school, onDelete } = props;
 	return school.list === null || school.list === undefined ? (
 		<Typography>
 			{school.error
-				? "Couldn't connect to the server! Try to refresh the page."
+				? school.error.response.data || "Couldn't connect to the server! Try to refresh the page."
 				: 'Loading...'}
 		</Typography>
 	) : school.list.length === 0 ? (

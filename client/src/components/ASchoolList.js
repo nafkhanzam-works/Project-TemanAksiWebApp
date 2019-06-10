@@ -1,6 +1,7 @@
 import { Button, Typography } from '@material-ui/core';
 import React from 'react';
 import Axios from 'axios';
+import { Link } from 'react-router-dom';
 import { res200, apiPostCB } from '../Utils';
 
 export default function(props) {
@@ -29,14 +30,19 @@ export default function(props) {
 					<>
 						<br />
 						<b>Akun Pemilik:</b>{' '}
-						{name && !error
-							? name
-							: error
-							? error.response.data
-							: 'loading...'}
+						{name && !error ? name : error ? error.response.data : 'loading...'}
 					</>
 				)}
 			</Typography>
+			<Button
+				variant="contained"
+				color="primary"
+				to={'/school/' + school.name}
+				component={Link}
+				style={{ marginRight: 10 }}
+			>
+				Profile
+			</Button>
 			{props.onDelete ? (
 				<Button
 					variant="contained"
