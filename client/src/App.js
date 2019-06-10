@@ -1,5 +1,4 @@
 import { AppBar, Button, Paper, Toolbar, Typography } from '@material-ui/core';
-import axios from 'axios';
 import React from 'react';
 import { BrowserRouter, Link, Route, Switch } from 'react-router-dom';
 import AddSchool from './routes/AddSchool';
@@ -7,8 +6,9 @@ import Home from './routes/Home';
 import Login from './routes/Login';
 import Profile from './routes/Profile';
 import Register from './routes/Register';
-import { redirect, apiGetCB } from './Utils';
+import { redirect, apiGetCB, res200 } from './Utils';
 import SchoolProfile from './routes/SchoolProfile';
+import Axios from 'axios';
 
 export default function() {
     const [state, setState] = React.useState({});
@@ -47,15 +47,17 @@ export default function() {
                                 style={{ marginLeft: 10 }}
                                 onClick={() => {
                                     setState({ ...state, loggingOut: true });
-                                    axios
-                                        .get('/api/logout')
-                                        .then(() => redirect())
-                                        .catch(() =>
+                                    (async () => {
+                                        try {
+                                            const res = await Axios.get('/api/logout');
+                                            if (res200(res)) redirect();
+                                        } catch (err) {
                                             setState({
                                                 ...state,
                                                 loggingOut: false // TODO: add connection error message!
                                             })
-                                        );
+                                        }
+                                    })();
                                 }}
                                 disabled={state.loggingOut}
                             >
