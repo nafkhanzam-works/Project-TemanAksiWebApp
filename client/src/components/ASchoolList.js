@@ -24,8 +24,6 @@ export default function(props) {
 		<li>
 			<Typography>
 				<b>Nama Sekolah:</b> {school.name}
-				<br />
-				<b>Deskripsi:</b> {school.desc}
 				{props.onDelete ? null : (
 					<>
 						<br />
