@@ -30,7 +30,7 @@ const Home = () => {
                 <br />
                 <b>Siap memberi bantuan?</b>
             </Typography>
-            <Paper style={{ padding: 10, maxHeight: 500, overflowY: 'auto' }}>
+            <Paper style={{ padding: 10, maxHeight: 1000, overflowY: 'auto' }}>
                 <SchoolList school={school} />
             </Paper>
             <Typography variant="h6" style={{ margin: '10px 0px 10px 0px' }}>
