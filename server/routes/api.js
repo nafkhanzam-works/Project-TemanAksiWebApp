@@ -47,7 +47,7 @@ router.use('/donate', (req, res) => {
     });
 });
 router.use('/addcritic', (req, res) => {
-	Critic.create({ ...schemas.getSchemaObject(req.body, Critic), userId: req.user._id }, (err, critic) => {
+	Critic.create({ ...schemas.getSchemaObject(req.body, Critic), userId: req.user ? req.user._id : null }, (err, critic) => {
 		if (log.res(res, 400, err)) return;
 		res.send(critic);
 	});
