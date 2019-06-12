@@ -1,17 +1,9 @@
-Kami atas nama teman aksi mengucapkan Terimakasih dan menyampaikan penghargaan yang sebesar-besar nya atas antuasisme kamu untuk membantu mereka yang membutuhkan bantuan 
-
-
-Sebagai bentuk tindak lanjut atas donasi yang akan kamu berikan, kamu dapat mengikuti aturan transfer yang telah kami buat, untuk menyampaikan donasi kamu kepada mereka yang membutuhkan. Berikut adalah cara bagaimana kamu dapat melakukan transfer 
-
-1. Kamu bisa transfer donasi kamu ke rekening (BCA) 2530033891 A/N Nur Setyaningsih
-
-2. Sebelum kamu memasukan nominal jumlah yang akan kamu transfer, pastikan kamu menggunakan 3 digit kode transaksi yang kami berikan, yaitu: 456
-
-Contoh: kamu akan mendonasikan sekitar 500.000 jadi ketika kamu akan transfer silahkan donasikan sebesar 500.456
-
-3. Pastikan nama tujuan dan nomor tujuan transaksi mu benar dan berhasil
-
-Demikian yang dapat kami sampaikan, sekali lagi kami mengucapkan terimakasih, karena bantuan dari kalian sudah memberikan harapan untuk mereka yang membutuhkan agar mendapatkan kualitas pendidikan yang layak
-
-Salam, 
-Teman aksi
+<p>Kami atas nama teman aksi mengucapkan Terimakasih dan menyampaikan penghargaan yang sebesar-besar nya atas antuasisme kamu untuk membantu mereka yang membutuhkan bantuan</p>
+<p><br />Sebagai bentuk tindak lanjut atas donasi yang akan kamu berikan, kamu dapat mengikuti aturan transfer yang telah kami buat, untuk menyampaikan donasi kamu kepada mereka yang membutuhkan. Berikut adalah cara bagaimana kamu dapat melakukan transfer</p>
+<ol>
+<li>Kamu bisa transfer donasi kamu ke rekening <strong>(BCA) 2530033891 A/N Nur Setyaningsih</strong></li>
+<li>Sebelum kamu memasukan nominal jumlah yang akan kamu transfer, pastikan kamu menggunakan 3 digit kode transaksi yang kami berikan, yaitu: <strong>${code}</strong><br /><br />Contoh: kamu akan mendonasikan sekitar Rp 500.000 jadi ketika kamu akan transfer silahkan donasikan sebesar Rp 500.<strong>${code}</strong><br /><br /></li>
+<li>Pastikan nama tujuan dan nomor tujuan transaksi mu benar dan berhasil</li>
+</ol>
+<p>Demikian yang dapat kami sampaikan, sekali lagi kami mengucapkan terimakasih, karena bantuan dari kalian sudah memberikan harapan untuk mereka yang membutuhkan agar mendapatkan kualitas pendidikan yang layak</p>
+<p>Salam,<br />Teman aksi</p>

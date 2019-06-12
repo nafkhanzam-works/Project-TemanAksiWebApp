@@ -1,19 +1,19 @@
 const mongoose = require('mongoose');
-const { strReq, strReqU, idReq } = require('../utils/schemas');
+const { idReq } = require('../utils/schemas');
 
 const donateSchema = mongoose.Schema({
-    message: String,
     userId: idReq,
+    name: String,
     schoolId: idReq,
+    code: {
+        type: Number,
+        required: true
+    },
     value: {
         type: Number,
-        default: 0,
-        min: 0
+        default: 0
     },
-    done: {
-        type: Boolean,
-        default: false
-    }
+    email: String
 });
 
 module.exports = mongoose.model('Donate', donateSchema);

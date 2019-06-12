@@ -41,7 +41,7 @@ router.use('/me', (req, res) => {
 	res.send(req.user);
 });
 router.use('/donate', (req, res) => {
-    require('../utils/email').sendDonationEmail(req.body.email, req.body.name, req.body.school, (err, emailResponse) => {
+    require('../utils/email').sendDonationEmail(req.body.email, req.body.name, req.body.school, req.user, (err, emailResponse) => {
         if (log.res(res, 500, err)) return;
         res.send({ emailResponse, success: true });
     });

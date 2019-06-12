@@ -103,7 +103,7 @@ const SchoolProfile = props => {
 				</Button>
 				{value.success ? (
 					<Typography>
-						Berhasil terkirim ke: <u>{value.success}</u>.<br />
+						Berhasil terkirim ke: {value.success}.<br />
 						Terima kasih!
 					</Typography>
 				) : value.error ? (
