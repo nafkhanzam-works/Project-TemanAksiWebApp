@@ -11,7 +11,7 @@ export default function(props) {
 	const { school } = props;
 	React.useEffect(
 		apiPostCB(
-			'api/db/user/findById',
+			'/api/db/user/findById',
 			{ _id: school.userId },
 			(error, user) => {
 				setName(user && user.name);

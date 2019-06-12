@@ -62,6 +62,13 @@ export const res200 = function(res) {
         throw new Error(res);
     return true;
 }
+export const getError = function(err) {
+    return err ? err.response
+    ? err.response.emailResponse
+        ? err.response.emailResponse
+        : err.response.data
+    : err.message : 'Error found!';
+}
 export const loadingComponent = function(data, error) {
     if (data === null || data === undefined || error)
         return (

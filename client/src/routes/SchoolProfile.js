@@ -1,6 +1,6 @@
 import { Typography, Paper, TextField, Button } from '@material-ui/core';
 import React from 'react';
-import { apiGet, loadingComponent, apiGetCB, res200 } from '../Utils';
+import { apiGet, loadingComponent, apiGetCB, res200, getError } from '../Utils';
 import Axios from 'axios';
 
 const SchoolProfile = props => {
@@ -63,7 +63,12 @@ const SchoolProfile = props => {
 					variant="contained"
 					color="primary"
 					onClick={() => {
-						setValue({ ...value, success: null, enabled: false });
+						setValue({
+							...value,
+							success: null,
+							enabled: false,
+							error: null
+						});
 						(async () => {
 							try {
 								const res = await Axios.post('/api/donate', {
@@ -79,16 +84,13 @@ const SchoolProfile = props => {
 										email: '',
 										name: ''
 									});
-									console.log(res);
-								}
-								else throw new Error('Internal server error!');
+								} else
+									throw new Error('Internal server error!');
 							} catch (err) {
 								setValue({
 									...value,
 									enabled: true,
-									error: err.response
-										? err.response.data
-										: err.message,
+									error: getError(err),
 									success: false
 								});
 							}
@@ -103,7 +105,9 @@ const SchoolProfile = props => {
 						Terima kasih!
 					</Typography>
 				) : value.error ? (
-					<Typography style={{ color: 'red' }}>{value.error}</Typography>
+					<Typography style={{ color: 'red' }}>
+						{value.error}
+					</Typography>
 				) : null}
 			</Paper>
 		</>

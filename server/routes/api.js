@@ -2,9 +2,10 @@ const express = require('express');
 const _ = require('lodash');
 const log = require('../utils/log');
 const config = require('../config/config');
-const User = require('../models/user');
+const User = require('../models/User');
 const schemas = require('../utils/schemas');
-const School = require('../models/school');
+const School = require('../models/School');
+const Critic = require('../models/Critic');
 
 const router = express.Router();
 
@@ -44,6 +45,12 @@ router.use('/donate', (req, res) => {
         if (log.res(res, 500, err)) return;
         res.send({ emailResponse, success: true });
     });
+});
+router.use('/addcritic', (req, res) => {
+	Critic.create({ ...schemas.getSchemaObject(req.body, Critic), userId: req.user._id }, (err, critic) => {
+		if (log.res(res, 400, err)) return;
+		res.send(critic);
+	});
 });
 router.use('/registerschool', (req, res) => {
 	if (!req.user) return log.status(res, 400, "You're not logged in!");
@@ -96,7 +103,7 @@ router.use('/db/:collection/:query', (req, res) => {
 	const qq = req.params.query;
 	const col = req.params.collection;
 	try {
-		const Model = require('../models/' + col);
+		const Model = require('../models/' + col.charAt(0).toUpperCase() + col.slice(1));
 		if (
 			!config.USER_QUERIES.includes(qq) &&
 			!config.except(req.user, col, qq)

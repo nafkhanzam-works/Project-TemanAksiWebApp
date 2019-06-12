@@ -38,7 +38,6 @@ const Profile = () => {
 					<SchoolList
 						school={school}
 						onDelete={() => {
-							setSchool({});
 							(async () => {
 								try {
 									const res = await Axios.get(
