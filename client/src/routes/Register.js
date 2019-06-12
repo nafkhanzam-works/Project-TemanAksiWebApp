@@ -1,7 +1,7 @@
 import { Button, TextField, Typography } from '@material-ui/core';
 import React from 'react';
 import { Redirect } from 'react-router-dom';
-import { redirect, apiGet, loadingComponent, res200 } from '../Utils';
+import { redirect, apiGet, loadingComponent, res200, widerFieldStyle } from '../Utils';
 import Axios from 'axios';
 
 const Register = () => {
@@ -57,6 +57,7 @@ const Register = () => {
 			<TextField
 				error={value.error}
 				label="Name"
+                style={widerFieldStyle(1.5)}
 				onChange={e => setValue({ ...value, name: e.target.value })}
 				margin="normal"
 				variant="outlined"
@@ -65,6 +66,7 @@ const Register = () => {
 			<TextField
 				error={value.error}
 				label="Email"
+                style={widerFieldStyle(1.5)}
 				type="email"
 				autoComplete="email"
 				onChange={e => setValue({ ...value, email: e.target.value })}
@@ -75,6 +77,7 @@ const Register = () => {
 			<TextField
 				error={value.error}
 				label="Password"
+                style={widerFieldStyle(1.5)}
 				type="password"
 				onChange={e => setValue({ ...value, password: e.target.value })}
 				margin="normal"
@@ -84,6 +87,7 @@ const Register = () => {
 			<TextField
 				error={value.error}
 				label="Confirm Password"
+                style={widerFieldStyle(1.5)}
 				type="password"
 				onKeyDown={e => doRegister(e, true)}
 				onChange={e =>

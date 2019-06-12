@@ -5,6 +5,7 @@ import { Typography } from "@material-ui/core";
 export const redirect = function(url) {
     window.location.href = '/' + (url || new URL(window.location.href).searchParams.get('redirect') || '');
 }
+export const widerFieldStyle = function(widthCount) {return { maxWidth: 250*(widthCount), width: '100%' }};
 export const apiGet = function(url, setData, setError) {
     return () => {
         let mounted = true;

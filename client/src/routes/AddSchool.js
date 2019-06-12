@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, TextField, Typography } from '@material-ui/core';
 import { Redirect } from 'react-router-dom';
-import { redirect, loadingComponent, apiGet, res200 } from '../Utils';
+import { redirect, loadingComponent, apiGet, res200, widerFieldStyle } from '../Utils';
 import Axios from 'axios';
 
 const AddSchoolForm = () => {
@@ -42,7 +42,7 @@ const AddSchoolForm = () => {
 			<TextField
 				error={!!value.error}
 				label="Nama Sekolah"
-				fullWidth
+				style={widerFieldStyle(2.5)}
 				value={value.name}
 				onChange={e => setValue({ ...value, name: e.target.value })}
 				margin="normal"
@@ -54,6 +54,7 @@ const AddSchoolForm = () => {
 				value={value.desc}
 				multiline
 				fullWidth
+				rows={6}
 				onChange={e => setValue({ ...value, desc: e.target.value })}
 				margin="normal"
 				variant="outlined"

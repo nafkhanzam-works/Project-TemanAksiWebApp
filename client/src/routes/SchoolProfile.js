@@ -1,6 +1,6 @@
 import { Typography, Paper, TextField, Button } from '@material-ui/core';
 import React from 'react';
-import { apiGet, loadingComponent, apiGetCB, res200, getError } from '../Utils';
+import { apiGet, loadingComponent, apiGetCB, res200, getError, widerFieldStyle } from '../Utils';
 import Axios from 'axios';
 
 const SchoolProfile = props => {
@@ -38,6 +38,7 @@ const SchoolProfile = props => {
 				<TextField
 					label="Name"
 					value={value.name}
+					style={widerFieldStyle(1.5)}
 					onChange={e => setValue({ ...value, name: e.target.value })}
 					margin="normal"
 					variant="outlined"
@@ -47,6 +48,7 @@ const SchoolProfile = props => {
 					label="Email"
 					type="email"
 					value={value.email}
+					style={widerFieldStyle(1.5)}
 					onChange={e =>
 						setValue({ ...value, email: e.target.value })
 					}

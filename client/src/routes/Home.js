@@ -1,9 +1,9 @@
-import { Button, Paper, Typography, TextField } from '@material-ui/core';
+import { Button, Paper, TextField, Typography } from '@material-ui/core';
+import Axios from 'axios';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import SchoolList from '../components/SchoolList';
-import { apiGetCB, getError, res200 } from '../Utils';
-import Axios from 'axios';
+import { apiGetCB, getError, res200, widerFieldStyle } from '../Utils';
 
 const Home = () => {
 	const [school, setSchool] = React.useState({});
@@ -112,7 +112,7 @@ const Home = () => {
 				<TextField
 					label="Nama (boleh dikosongkan)"
                     value={value.name}
-                    style={{ maxWidth: 250, width: '100%' }}
+                    style={widerFieldStyle(1.5)}
 					onChange={e => setValue({ ...value, name: e.target.value })}
 					margin="normal"
 					variant="outlined"
@@ -122,8 +122,8 @@ const Home = () => {
 					label="Pesan"
                     value={value.pesan}
 					multiline
-                    rows="4"
-                    fullWidth
+					rows="4"
+					style={widerFieldStyle(1.5)}
 					onChange={e =>
 						setValue({ ...value, pesan: e.target.value })
 					}

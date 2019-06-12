@@ -1,7 +1,7 @@
 import { Button, TextField, Typography } from '@material-ui/core';
 import React from 'react';
 import { Redirect } from 'react-router-dom';
-import { redirect, apiGet, loadingComponent, res200 } from '../Utils';
+import { redirect, apiGet, loadingComponent, res200, widerFieldStyle } from '../Utils';
 import Axios from 'axios';
 
 const Login = () => {
@@ -46,6 +46,7 @@ const Login = () => {
                 type="email"
                 autoComplete="email"
                 value={value.email}
+                style={widerFieldStyle(1.5)}
                 onChange={e => setValue({ ...value, email: e.target.value })}
                 margin="normal"
                 variant="outlined"
@@ -56,6 +57,7 @@ const Login = () => {
                 label="Password"
                 value={value.password}
                 type="password"
+                style={widerFieldStyle(1.5)}
                 onKeyDown={e => doLogin(e, true)}
                 onChange={e => setValue({ ...value, password: e.target.value })}
                 margin="normal"
