@@ -1,6 +1,15 @@
 import { Typography, Paper, TextField, Button } from '@material-ui/core';
 import React from 'react';
-import { apiGet, loadingComponent, apiGetCB, res200, getError, widerFieldStyle } from '../Utils';
+import '../css/draft.css';
+import {
+	apiGet,
+	loadingComponent,
+	apiGetCB,
+	res200,
+	getError,
+	widerFieldStyle
+} from '../Utils';
+import { Editor, EditorState, convertFromRaw } from 'draft-js';
 import Axios from 'axios';
 
 const SchoolProfile = props => {
@@ -8,9 +17,7 @@ const SchoolProfile = props => {
 	const [school, setSchool] = React.useState(null);
 	const [error, setError] = React.useState(false);
 	const [value, setValue] = React.useState({
-		enabled: true,
-		name: '',
-		email: ''
+		enabled: true
 	});
 	React.useEffect(apiGet('/api/getschool/' + name, setSchool, setError), []);
 	React.useEffect(
@@ -29,15 +36,26 @@ const SchoolProfile = props => {
 	if (loading) return loading;
 	return (
 		<>
-			<Typography variant="h4">{school.name}</Typography>
-			<br />
-			<Typography>{school.desc}</Typography>
+			{school.content ? (
+				<div className="wrapper">
+					<Editor
+						editorState={EditorState.createWithContent(
+							convertFromRaw(JSON.parse(school.content))
+						)}
+						readOnly
+					/>
+				</div>
+			) : (
+				<Typography>
+					Konten error atau tidak ditemukan! Hubungi developer!
+				</Typography>
+			)}
 			<br />
 			<Paper style={{ padding: 20 }}>
 				<Typography variant="h5">Donasi</Typography>
 				<TextField
 					label="Name"
-					value={value.name}
+					value={value.name || ''}
 					style={widerFieldStyle(1.5)}
 					onChange={e => setValue({ ...value, name: e.target.value })}
 					margin="normal"
@@ -47,7 +65,7 @@ const SchoolProfile = props => {
 				<TextField
 					label="Email"
 					type="email"
-					value={value.email}
+					value={value.email || ''}
 					style={widerFieldStyle(1.5)}
 					onChange={e =>
 						setValue({ ...value, email: e.target.value })

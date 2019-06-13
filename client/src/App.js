@@ -13,7 +13,7 @@ import Axios from 'axios';
 export default function() {
     const [state, setState] = React.useState({});
     const [user, setUser] = React.useState(null);
-    React.useEffect(apiGetCB('api/me', (err, user) => setUser(user)), []);
+    React.useEffect(apiGetCB('/api/me', (err, user) => setUser(user)), []);
     return (
         <BrowserRouter>
             <AppBar color="primary" position="static">

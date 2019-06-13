@@ -1,55 +1,56 @@
-import React from 'react';
-import { Button, TextField, Typography } from '@material-ui/core';
-import { Redirect } from 'react-router-dom';
-import { redirect, loadingComponent, apiGet, res200, widerFieldStyle } from '../Utils';
+import { Button, InputAdornment, TextField, Typography } from '@material-ui/core';
 import Axios from 'axios';
+import React from 'react';
+import { Editor } from 'react-draft-wysiwyg';
+import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+import { Prompt, Redirect } from 'react-router-dom';
+import { convertToRaw } from 'draft-js';
+import '../css/draft.css';
+import { apiGet, loadingComponent, redirect, res200, widerFieldStyle, getError } from '../Utils';
 
 const AddSchoolForm = () => {
 	const [value, setValue] = React.useState({
-		name: '',
-		desc: '',
 		loading: false,
-		error: false
+		error: false,
 	});
 	const [error, setError] = React.useState(false);
 	const [user, setUser] = React.useState(null);
-    React.useEffect(apiGet('api/me', setUser, setError), []);
+	React.useEffect(apiGet('api/me', setUser, setError), []);
 	const loading = loadingComponent(user, error);
 	if (loading) return loading;
 	if (!user) return <Redirect to="/login?redirect=addschool" />;
-	const doSubmit = () => {
-		setValue({ ...value, loading: true });
-		(async () => {
-			try {
-				const res = await Axios.post('/api/registerschool/create', {
-					name: value.name,
-					desc: value.desc
-                });
-                if (res200(res))
-                    redirect('profile');
-			} catch (err) {
-                setValue({
-					...value,
-					loading: false,
-					error: err.response.data
-				});
-            }
-		})();
-	};
 	return (
 		<>
-			<Typography>Tambah Sekolah ke Teman Aksi</Typography>
+			<Prompt message="Pekerjaan Anda tidak akan tersimpan jika Anda meninggalkan halaman ini!" />
+			<Typography variant='h5'>Tambah Sekolah ke Teman Aksi</Typography>
 			<TextField
 				error={!!value.error}
 				label="Nama Sekolah"
 				style={widerFieldStyle(2.5)}
-				value={value.name}
+				value={value.name || ''}
 				onChange={e => setValue({ ...value, name: e.target.value })}
 				margin="normal"
 				variant="outlined"
 			/>
 			<br />
 			<TextField
+				error={!!value.error}
+				label="Link Halaman"
+				style={widerFieldStyle(2.5)}
+				value={value.link || ''}
+				onChange={e => setValue({ ...value, link: e.target.value })}
+				margin="normal"
+				variant="outlined"
+				InputProps={{
+					startAdornment: (
+						<InputAdornment position="start">
+							/school/
+						</InputAdornment>
+					)
+				}}
+			/>
+			<br />
+			{/* <TextField
 				label="Deskripsi"
 				value={value.desc}
 				multiline
@@ -58,6 +59,19 @@ const AddSchoolForm = () => {
 				onChange={e => setValue({ ...value, desc: e.target.value })}
 				margin="normal"
 				variant="outlined"
+			/> */}
+			<Typography variant='h6'>Konten:</Typography>
+			<Editor
+				editorState={value.editorState}
+				onEditorStateChange={editorState => setValue({ ...value, editorState })}
+				toolbarClassName="toolbar"
+				wrapperClassName='wrapper'
+				editorClassName='editor'
+				toolbar={{
+					fontFamily: {
+						options: ['Arial', 'Georgia', 'Impact', 'Roboto', 'Tahoma', 'Times New Roman', 'Verdana']
+					}
+				}}  
 			/>
 			<br />
 			{value.error ? (
@@ -71,7 +85,28 @@ const AddSchoolForm = () => {
 			<Button
 				variant="contained"
 				color="primary"
-				onClick={doSubmit}
+				onClick={() => {
+					setValue({ ...value, loading: true });
+					(async () => {
+						try {
+							const res = await Axios.post(
+								'/api/registerschool/create',
+								{
+									name: value.name,
+									link: value.link,
+									content: JSON.stringify(convertToRaw(value.editorState.getCurrentContent()))
+								}
+							);
+							if (res200(res)) redirect('school/' + value.link);
+						} catch (err) {
+							setValue({
+								...value,
+								loading: false,
+								error: getError(err)
+							});
+						}
+					})();
+				}}
 				disabled={value.loading}
 			>
 				{value.loading ? 'Uploading data...' : 'Tambah Sekolah'}

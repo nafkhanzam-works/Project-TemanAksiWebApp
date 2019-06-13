@@ -14,25 +14,25 @@ app.use(express.json());
 app.use(cookieParser());
 app.use('/api', api);
 
-app.use(
-    express.static(require('path').resolve(__dirname + '/../client/build'))
-);
-app.use('/*', (req, res) =>
-    res.sendFile(
-        require('path').resolve(__dirname + '/../client/build/index.html')
-    )
-);
-
+if (config.PROD) {
+	app.use(
+		express.static(require('path').resolve(__dirname + '/../client/build'))
+	);
+	app.use('/*', (req, res) =>
+		res.sendFile(
+			require('path').resolve(__dirname + '/../client/build/index.html')
+		)
+	);
+}
 app.listen(config.PORT, err => {
-    if (log.err(err)) return;
-    log.log('Listening to port ' + config.PORT + '...');
+	if (log.err(err)) return;
+	log.log('Listening to port ' + config.PORT + '...');
 });
-
 mongoose.connect(
-    config.DATABASE,
-    { useNewUrlParser: true, useCreateIndex: true, useFindAndModify: false },
-    err => {
-        if (log.err(err)) return;
-        log.log('Connected to MongoDB!');
-    }
+	config.DATABASE,
+	{ useNewUrlParser: true, useCreateIndex: true, useFindAndModify: false },
+	err => {
+		if (log.err(err)) return;
+		log.log('Connected to MongoDB!');
+	}
 );

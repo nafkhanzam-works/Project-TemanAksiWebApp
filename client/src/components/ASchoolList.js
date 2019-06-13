@@ -35,7 +35,7 @@ export default function(props) {
 			<Button
 				variant="contained"
 				color="primary"
-				to={'/school/' + school.name}
+				to={'/school/' + school.link}
 				component={Link}
 				style={{ marginRight: 10 }}
 			>

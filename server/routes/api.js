@@ -90,7 +90,7 @@ router.use('/login', (req, res) => {
 });
 router.use('/getschool/:name', async (req, res) => {
 	try {
-		const school = await School.findOne({ name: req.params.name });
+		const school = await School.findOne({ link: req.params.name });
 		if (!school) return log.status(res, 404, 'School not found!');
 		res.send(school);
 	} catch (err) {

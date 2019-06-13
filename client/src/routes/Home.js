@@ -22,7 +22,7 @@ const Home = () => {
 		[]
 	);
 	React.useEffect(
-		apiGetCB('api/schools/all', (error, list) =>
+		apiGetCB('/api/schools/all', (error, list) =>
 			setSchool({ error, list })
 		),
 		[]
