@@ -9,6 +9,7 @@ import Register from './routes/Register';
 import { redirect, apiGetCB, res200 } from './Utils';
 import SchoolProfile from './routes/SchoolProfile';
 import Axios from 'axios';
+import EditSchool from './routes/EditSchool';
 
 export default function() {
     const [state, setState] = React.useState({});
@@ -93,7 +94,9 @@ export default function() {
                     <Route path="/register" component={Register} />
                     <Route path="/addschool" component={AddSchool} />
                     <Route path="/profile" component={Profile} />
-                    <Route path="/school/:name" component={SchoolProfile} />
+                    <Route path="/school/:link" component={SchoolProfile} />
+                    <Route path="/edit/:link" component={EditSchool} />
+
                     <Route exact path="/" component={Home} />
                     <div>
                         <h1>404 Not Found!</h1>

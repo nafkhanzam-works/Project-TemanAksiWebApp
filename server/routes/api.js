@@ -88,9 +88,23 @@ router.use('/login', (req, res) => {
 	if (req.user) return log.status(res, 400, "You're already logged in.");
 	login(req, res);
 });
-router.use('/getschool/:name', async (req, res) => {
+router.use('/editschool/:link', async (req, res) => {
 	try {
-		const school = await School.findOne({ link: req.params.name });
+		const school = await School.findOne({ link: req.params.link });
+		if (!school) return log.status(res, 404, 'School not found!');
+		const { link, name, content } = req.body;
+		school.link = link;
+		school.name = name;
+		school.content = content;
+		await school.save();
+		res.send(school);
+	} catch (err) {
+		log.res(res, 400, err);
+	}
+});
+router.use('/getschool/:link', async (req, res) => {
+	try {
+		const school = await School.findOne({ link: req.params.link });
 		if (!school) return log.status(res, 404, 'School not found!');
 		res.send(school);
 	} catch (err) {

@@ -1,6 +1,7 @@
 import Axios from 'axios';
 import React from 'react';
 import { Typography } from '@material-ui/core';
+import { convertToRaw, convertFromRaw, EditorState } from 'draft-js';
 
 export const redirect = function(url) {
 	window.location.href =
@@ -12,6 +13,12 @@ export const redirect = function(url) {
 export const widerFieldStyle = function(widthCount) {
 	return { maxWidth: 250 * widthCount, width: '100%' };
 };
+export const getEditorState = function(rawJson) {
+	return EditorState.createWithContent(convertFromRaw(JSON.parse(rawJson)));
+};
+export const getEditorRaw = function (editorState) {
+	return JSON.stringify(convertToRaw(editorState.getCurrentContent()));
+}
 export const apiGet = function(url, setData, setError) {
 	return () => {
 		let mounted = true;

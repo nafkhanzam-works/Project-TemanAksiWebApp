@@ -2,13 +2,14 @@ import { Button, InputAdornment, TextField, Typography } from '@material-ui/core
 import Axios from 'axios';
 import React from 'react';
 import { Editor } from 'react-draft-wysiwyg';
+import _resizablePlugin from 'draft-js-resizeable-plugin';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import { Prompt, Redirect } from 'react-router-dom';
-import { convertToRaw } from 'draft-js';
 import '../css/draft.css';
-import { apiGet, loadingComponent, redirect, res200, widerFieldStyle, getError } from '../Utils';
+import { apiGet, loadingComponent, redirect, res200, widerFieldStyle, getError, getEditorRaw } from '../Utils';
 
-const AddSchoolForm = () => {
+const resizablePlugin = _resizablePlugin();
+const AddSchool = () => {
 	const [value, setValue] = React.useState({
 		loading: false,
 		error: false,
@@ -50,16 +51,6 @@ const AddSchoolForm = () => {
 				}}
 			/>
 			<br />
-			{/* <TextField
-				label="Deskripsi"
-				value={value.desc}
-				multiline
-				fullWidth
-				rows={6}
-				onChange={e => setValue({ ...value, desc: e.target.value })}
-				margin="normal"
-				variant="outlined"
-			/> */}
 			<Typography variant='h6'>Konten:</Typography>
 			<Editor
 				editorState={value.editorState}
@@ -67,6 +58,7 @@ const AddSchoolForm = () => {
 				toolbarClassName="toolbar"
 				wrapperClassName='wrapper'
 				editorClassName='editor'
+				plugins={[resizablePlugin]}
 				toolbar={{
 					fontFamily: {
 						options: ['Arial', 'Georgia', 'Impact', 'Roboto', 'Tahoma', 'Times New Roman', 'Verdana']
@@ -94,7 +86,7 @@ const AddSchoolForm = () => {
 								{
 									name: value.name,
 									link: value.link,
-									content: JSON.stringify(convertToRaw(value.editorState.getCurrentContent()))
+									content: getEditorRaw(value.editorState)
 								}
 							);
 							if (res200(res)) redirect('school/' + value.link);
@@ -115,4 +107,4 @@ const AddSchoolForm = () => {
 	);
 };
 
-export default AddSchoolForm;
+export default AddSchool;

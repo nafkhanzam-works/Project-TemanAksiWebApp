@@ -7,6 +7,8 @@
     "@material-ui/styles": "^4.0.1",
     "axios": "^0.18.0",
     "draft-js": "^0.10.5",
+    "draft-js-plugins-editor": "^2.1.1",
+    "draft-js-resizeable-plugin": "^2.0.8",
     "immutable": "^3.8.2",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",

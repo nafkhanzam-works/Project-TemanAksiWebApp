@@ -1,25 +1,33 @@
-import { Typography, Paper, TextField, Button } from '@material-ui/core';
+import { Button, Paper, TextField, Typography } from '@material-ui/core';
+import Axios from 'axios';
+import { Editor } from 'react-draft-wysiwyg';
+import { Link } from 'react-router-dom';
 import React from 'react';
 import '../css/draft.css';
 import {
 	apiGet,
-	loadingComponent,
 	apiGetCB,
-	res200,
+	getEditorState,
 	getError,
+	loadingComponent,
+	res200,
 	widerFieldStyle
 } from '../Utils';
-import { Editor, EditorState, convertFromRaw } from 'draft-js';
-import Axios from 'axios';
 
 const SchoolProfile = props => {
-	const { name } = props.match.params;
 	const [school, setSchool] = React.useState(null);
 	const [error, setError] = React.useState(false);
 	const [value, setValue] = React.useState({
 		enabled: true
 	});
-	React.useEffect(apiGet('/api/getschool/' + name, setSchool, setError), []);
+	React.useEffect(
+		apiGet(
+			'/api/getschool/' + props.match.params.link,
+			setSchool,
+			setError
+		),
+		[]
+	);
 	React.useEffect(
 		apiGetCB('/api/me', (error, user) => {
 			if (user)
@@ -36,19 +44,26 @@ const SchoolProfile = props => {
 	if (loading) return loading;
 	return (
 		<>
+			{school.userId === value.userId ? (
+					<Button
+						style={{ position: 'absolute', right: 25 }}
+						variant="contained"
+						color="primary"
+						component={Link}
+						to={'/edit/' + school.link}
+					>
+						Edit
+					</Button>
+			) : null}
 			{school.content ? (
-				<div className="wrapper">
-					<Editor
-						editorState={EditorState.createWithContent(
-							convertFromRaw(JSON.parse(school.content))
-						)}
-						readOnly
-					/>
-				</div>
+				<Editor
+					editorState={getEditorState(school.content)}
+					toolbarHidden
+					wrapperClassName="wrapper"
+					readOnly
+				/>
 			) : (
-				<Typography>
-					Konten error atau tidak ditemukan! Hubungi developer!
-				</Typography>
+				<Typography>Konten tidak ditemukan!</Typography>
 			)}
 			<br />
 			<Paper style={{ padding: 20 }}>

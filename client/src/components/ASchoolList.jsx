@@ -28,7 +28,11 @@ export default function(props) {
 					<>
 						<br />
 						<b>Akun Pemilik:</b>{' '}
-						{name && !error ? name : error ? error.response.data : 'loading...'}
+						{name && !error
+							? name
+							: error
+							? error.response.data
+							: 'loading...'}
 					</>
 				)}
 			</Typography>
@@ -42,33 +46,44 @@ export default function(props) {
 				Profile
 			</Button>
 			{props.onDelete ? (
-				<Button
-					variant="contained"
-					color="secondary"
-					disabled={value.loading}
-					onClick={() => {
-						setValue({ ...value, loading: true });
-						(async () => {
-							try {
-								const res = await Axios.post(
-									'api/removemyschool',
-									{
-										schoolId: school._id
-									}
-								);
-								if (res200(res)) props.onDelete();
-							} catch (error) {
-								setValue({
-									...value,
-									error,
-									loading: false
-								});
-							}
-						})();
-					}}
-				>
-					Hapus
-				</Button>
+				<>
+					<Button
+						variant="contained"
+						color="primary"
+						to={'/edit/' + school.link}
+						component={Link}
+						style={{ marginRight: 10 }}
+					>
+						Edit
+					</Button>
+					<Button
+						variant="contained"
+						color="secondary"
+						disabled={value.loading}
+						onClick={() => {
+							setValue({ ...value, loading: true });
+							(async () => {
+								try {
+									const res = await Axios.post(
+										'api/removemyschool',
+										{
+											schoolId: school._id
+										}
+									);
+									if (res200(res)) props.onDelete();
+								} catch (error) {
+									setValue({
+										...value,
+										error,
+										loading: false
+									});
+								}
+							})();
+						}}
+					>
+						Hapus
+					</Button>
+				</>
 			) : null}
 		</li>
 	);
