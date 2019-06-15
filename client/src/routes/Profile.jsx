@@ -25,16 +25,19 @@ const Profile = () => {
 			</Typography>
 			<ul>
 				<li>
-				<Typography><b>Nama:</b> {user.name}</Typography>
+					<Typography>
+						<b>Nama:</b> {user.name}
+					</Typography>
 				</li>
 				<li>
-				<Typography><b>Email:</b> {user.email}</Typography>
+					<Typography>
+						<b>Email:</b> {user.email}
+					</Typography>
 				</li>
 				<li>
-				<Typography><b>Database ID:</b> {user._id}</Typography>
-				</li>
-				<li>
-				<Typography><b>Sekolah yang saya daftarkan:</b></Typography>
+					<Typography>
+						<b>Sekolah yang saya daftarkan:</b>
+					</Typography>
 					<SchoolList
 						school={school}
 						onDelete={() => {

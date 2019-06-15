@@ -10,6 +10,7 @@ const schoolSchema = mongoose.Schema({
             message: 'link tidak boleh mengandung spasi!' // TODO: add () => 
         },
     },
+    summary: String,
     thumbnail: String,
     content: Object,
     userId: idReq
