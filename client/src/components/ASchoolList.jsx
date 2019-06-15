@@ -3,6 +3,7 @@ import Axios from 'axios';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { res200 } from '../Utils';
+import emptyImage from '../empty.jpg';
 
 export default function(props) {
 	// const [name, setName] = React.useState(null);
@@ -24,7 +25,7 @@ export default function(props) {
 		<li style={{ display: 'flex', marginBottom: 20 }}>
 			<img
 				style={{ width: 200, height: 150 }}
-				src={school.thumbnail || '../empty.jpg'}
+				src={school.thumbnail || emptyImage}
 				alt="Thumbnail"
 			/>
 			<div style={{ marginLeft: 20 }}>
