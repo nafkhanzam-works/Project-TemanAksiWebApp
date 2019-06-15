@@ -110,7 +110,7 @@ const SchoolProfile = props => {
 									userId: value.userId,
 									email: value.email,
 									name: value.name,
-									school: school.link
+									schoolId: school._id
 								});
 								if (res200(res) && res.data.success) {
 									setValue({

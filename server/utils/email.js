@@ -19,7 +19,7 @@ exports.sendDonationEmail = function(targetEmail, name, school, user, callback) 
 			var codeStr = code.toString();
 			while (codeStr.length < 3)
 				codeStr = '0' + codeStr;
-			Donate.create({ email: targetEmail, name, schoolId: school._id, userId: user._id, code }, (err, res) => {
+			Donate.create({ email: targetEmail, name, schoolId: school._id, userId: user ? user._id : null, code }, (err, res) => {
 				if (err) return callback(err);
 				require('gmail-send')({
 					user: 'nafkhanalzamzami@gmail.com',
