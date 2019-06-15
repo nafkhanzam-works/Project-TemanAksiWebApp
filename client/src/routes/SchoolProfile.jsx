@@ -46,7 +46,7 @@ const SchoolProfile = props => {
 		<>
 			{school.userId === value.userId ? (
 					<Button
-						style={{ position: 'absolute', right: 25 }}
+						style={{ position: 'absolute', right: 25 }} // TODO: Make it more effective!
 						variant="contained"
 						color="primary"
 						component={Link}

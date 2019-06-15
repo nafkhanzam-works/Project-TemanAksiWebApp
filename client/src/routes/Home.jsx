@@ -23,7 +23,7 @@ const Home = () => {
 	);
 	React.useEffect(
 		apiGetCB('/api/schools/all', (error, list) =>
-			setSchool({ error, list })
+			setSchool({ error, list, _list: list })
 		),
 		[]
 	);
@@ -52,6 +52,21 @@ const Home = () => {
 				</div>
 				<br />
 				<b>Siap memberi bantuan?</b>
+				<TextField
+					style={{ marginTop: -18, marginLeft: 20 }}
+					label="Cari Sekolah"
+					type="search"
+					onChange={e => {
+						setSchool({
+							...school,
+							list: school._list.filter(v =>
+								v.name
+									.toLowerCase()
+									.includes(e.target.value.toLowerCase())
+							)
+						});
+					}}
+				/>
 			</Typography>
 			<Paper style={{ padding: 10, maxHeight: 1000, overflowY: 'auto' }}>
 				<SchoolList school={school} />
@@ -111,8 +126,8 @@ const Home = () => {
 				</Typography>
 				<TextField
 					label="Nama (boleh dikosongkan)"
-                    value={value.name}
-                    style={widerFieldStyle(1.5)}
+					value={value.name}
+					style={widerFieldStyle(1.5)}
 					onChange={e => setValue({ ...value, name: e.target.value })}
 					margin="normal"
 					variant="outlined"
@@ -120,7 +135,7 @@ const Home = () => {
 				<br />
 				<TextField
 					label="Pesan"
-                    value={value.pesan}
+					value={value.pesan}
 					multiline
 					rows="4"
 					style={widerFieldStyle(1.5)}

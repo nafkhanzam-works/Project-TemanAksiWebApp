@@ -1,6 +1,5 @@
 import { Button, InputAdornment, TextField, Typography } from '@material-ui/core';
 import Axios from 'axios';
-import _resizablePlugin from 'draft-js-resizeable-plugin';
 import React from 'react';
 import { Editor } from 'react-draft-wysiwyg';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
@@ -8,7 +7,6 @@ import { Prompt, Redirect } from 'react-router-dom';
 import '../css/draft.css';
 import { apiGetCB, getEditorRaw, getEditorState, getError, loadingComponent, redirect, res200, widerFieldStyle } from '../Utils';
 
-const resizablePlugin = _resizablePlugin();
 const EditSchool = (props) => {
 	const [value, setValue] = React.useState({
 		loading: false,
@@ -48,7 +46,7 @@ const EditSchool = (props) => {
 			<br />
 			<TextField
 				error={!!value.error}
-				label="Link Halaman"
+				label="URL Halaman"
 				style={widerFieldStyle(2.5)}
 				value={value.link || ''}
 				onChange={e => setValue({ ...value, link: e.target.value })}
@@ -63,6 +61,26 @@ const EditSchool = (props) => {
 				}}
 			/>
 			<br />
+			<TextField
+				label="Thumbnail Image Link (optional) (resized to: 200x150)"
+				style={widerFieldStyle(2.5)}
+				value={value.thumbnail || ''}
+				onChange={e => setValue({ ...value, thumbnail: e.target.value })}
+				margin="normal"
+				variant="outlined"
+			/>
+			<br />
+			<TextField
+				label="Deskripsi Pendek"
+				value={value.summary || ''}
+				multiline
+				rows="4"
+				style={widerFieldStyle(2.5)}
+				onChange={e => setValue({ ...value, summary: e.target.value })}
+				margin="normal"
+				variant="outlined"
+			/>
+			<br />
 			<Typography variant='h6'>Konten:</Typography>
 			<Editor
 				editorState={value.editorState}
@@ -70,7 +88,6 @@ const EditSchool = (props) => {
 				toolbarClassName="toolbar"
 				wrapperClassName='wrapper'
                 editorClassName='editor'
-                plugins={[resizablePlugin]}
 				toolbar={{
 					fontFamily: {
 						options: ['Arial', 'Georgia', 'Impact', 'Roboto', 'Tahoma', 'Times New Roman', 'Verdana']
@@ -98,6 +115,8 @@ const EditSchool = (props) => {
 								{
 									name: value.name,
 									link: value.link,
+									thumbnail: value.thumbnail,
+									summary: value.summary,
 									content: getEditorRaw(value.editorState)
 								}
 							);
