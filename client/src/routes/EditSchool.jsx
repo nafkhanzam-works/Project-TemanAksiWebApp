@@ -1,39 +1,71 @@
-import { Button, InputAdornment, TextField, Typography } from '@material-ui/core';
+import {
+	Button,
+	InputAdornment,
+	TextField,
+	Typography
+} from '@material-ui/core';
 import Axios from 'axios';
 import React from 'react';
 import { Editor } from 'react-draft-wysiwyg';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import { Prompt, Redirect } from 'react-router-dom';
 import '../css/draft.css';
-import { apiGetCB, getEditorRaw, getEditorState, getError, loadingComponent, redirect, res200, widerFieldStyle } from '../Utils';
+import {
+	apiGetCB,
+	getEditorRaw,
+	getEditorState,
+	getError,
+	loadingComponent,
+	redirect,
+	res200,
+	widerFieldStyle
+} from '../Utils';
 
-const EditSchool = (props) => {
+const EditSchool = props => {
 	const [value, setValue] = React.useState({
 		loading: false,
-		error: false,
+		error: false
 	});
 	const [error, setError] = React.useState(false);
 	const [user, setUser] = React.useState(null);
 	const [school, setSchool] = React.useState(null);
-    React.useEffect(apiGetCB('/api/getschool/' + props.match.params.link, async (err, school) => {
-        try {
-            if (err) throw err;
-            const res = await Axios.get('/api/me');
-            setUser(res.data);
-            if (school.userId !== res.data._id) throw new Error('No permission!');
-            setSchool(school);
-            setValue({ ...value, name: school.name, link: school.link, editorState: getEditorState(school.content) });
-        } catch (err) {
-            return setError(err);
-        }
-    }), []);
+	React.useEffect(
+		apiGetCB(
+			'/api/getschool/' + props.match.params.link,
+			async (err, school) => {
+				try {
+					if (err) throw err;
+					const res = await Axios.get('/api/me');
+					setUser(res.data);
+					if (school.userId !== res.data._id)
+						throw new Error('No permission!');
+					setSchool(school);
+					setValue({
+						...value,
+						name: school.name,
+						link: school.link,
+						summary: school.summary,
+						editorState: getEditorState(school.content)
+					});
+				} catch (err) {
+					return setError(err);
+				}
+			}
+		),
+		[]
+	);
 	const loading = loadingComponent(user, error);
-    if (loading) return loading;
-    if (!user) return <Redirect to={"/login?redirect=" + window.location.pathname.slice(1)} />;
+	if (loading) return loading;
+	if (!user)
+		return (
+			<Redirect
+				to={'/login?redirect=' + window.location.pathname.slice(1)}
+			/>
+		);
 	return (
 		<>
 			<Prompt message="Pekerjaan Anda tidak akan tersimpan jika Anda meninggalkan halaman ini!" />
-			<Typography variant='h5'>Edit konten sekolah</Typography>
+			<Typography variant="h5">Edit konten sekolah</Typography>
 			<TextField
 				error={!!value.error}
 				label="Nama Sekolah"
@@ -65,7 +97,9 @@ const EditSchool = (props) => {
 				label="Thumbnail Image Link (optional) (resized to: 200x150)"
 				style={widerFieldStyle(2.5)}
 				value={value.thumbnail || ''}
-				onChange={e => setValue({ ...value, thumbnail: e.target.value })}
+				onChange={e =>
+					setValue({ ...value, thumbnail: e.target.value })
+				}
 				margin="normal"
 				variant="outlined"
 			/>
@@ -81,18 +115,28 @@ const EditSchool = (props) => {
 				variant="outlined"
 			/>
 			<br />
-			<Typography variant='h6'>Konten:</Typography>
+			<Typography variant="h6">Konten:</Typography>
 			<Editor
 				editorState={value.editorState}
-				onEditorStateChange={editorState => setValue({ ...value, editorState })}
+				onEditorStateChange={editorState =>
+					setValue({ ...value, editorState })
+				}
 				toolbarClassName="toolbar"
-				wrapperClassName='wrapper'
-                editorClassName='editor'
+				wrapperClassName="wrapper"
+				editorClassName="editor"
 				toolbar={{
 					fontFamily: {
-						options: ['Arial', 'Georgia', 'Impact', 'Roboto', 'Tahoma', 'Times New Roman', 'Verdana']
+						options: [
+							'Arial',
+							'Georgia',
+							'Impact',
+							'Roboto',
+							'Tahoma',
+							'Times New Roman',
+							'Verdana'
+						]
 					}
-				}}  
+				}}
 			/>
 			<br />
 			{value.error ? (
