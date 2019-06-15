@@ -1,25 +1,25 @@
-import { Button, Typography } from '@material-ui/core';
-import React from 'react';
+import { Button, Link, Typography } from '@material-ui/core';
 import Axios from 'axios';
-import { Link } from 'react-router-dom';
-import { res200, apiPostCB } from '../Utils';
+import React from 'react';
+import { Link as RouterLink } from 'react-router-dom';
+import { res200 } from '../Utils';
 
 export default function(props) {
-	const [name, setName] = React.useState(null);
-	const [error, setError] = React.useState(false);
+	// const [name, setName] = React.useState(null);
+	// const [error, setError] = React.useState(false);
 	const [value, setValue] = React.useState({});
 	const { school } = props;
-	React.useEffect(
-		apiPostCB(
-			'/api/db/user/findById',
-			{ _id: school.userId },
-			(error, user) => {
-				setName(user && user.name);
-				setError(error);
-			}
-		),
-		[]
-	);
+	// React.useEffect(
+	// 	apiPostCB(
+	// 		'/api/db/user/findById',
+	// 		{ _id: school.userId },
+	// 		(error, user) => {
+	// 			setName(user && user.name);
+	// 			setError(error);
+	// 		}
+	// 	),
+	// 	[]
+	// );
 	return (
 		<li style={{ display: 'flex', marginBottom: 20 }}>
 			<img
@@ -31,15 +31,13 @@ export default function(props) {
 				style={{ width: 200, height: 150 }}
 			/>
 			<div style={{ marginLeft: 20 }}>
-				<Typography>
-					<b>Nama Sekolah:</b> {school.name}
-					{school.summary ? (
-						<>
-							<br />
-							<b>Deskripsi Pendek:</b> {school.summary}
-						</>
-					) : null}
-					{props.onDelete ? null : (
+				<Link to={'/school/' + school.link} component={RouterLink} variant='h5'>
+						<b>{school.name}</b>
+				</Link>
+				{school.summary ? (
+					<Typography>{school.summary}</Typography>
+				) : null}
+				{/* {props.onDelete ? null : (
 						<>
 							<br />
 							<b>Akun Pemilik:</b>{' '}
@@ -49,17 +47,7 @@ export default function(props) {
 								? error.response.data
 								: 'loading...'}
 						</>
-					)}
-				</Typography>
-				<Button
-					variant="contained"
-					color="primary"
-					to={'/school/' + school.link}
-					component={Link}
-					style={{ marginRight: 10 }}
-				>
-					Profile
-				</Button>
+					)} */}
 				{props.onDelete ? (
 					<>
 						<Button

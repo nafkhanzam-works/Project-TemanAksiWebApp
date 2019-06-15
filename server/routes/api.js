@@ -92,10 +92,11 @@ router.use('/editschool/:link', async (req, res) => {
 	try {
 		const school = await School.findOne({ link: req.params.link });
 		if (!school) return log.status(res, 404, 'School not found!');
-		const { link, name, content } = req.body;
+		const { link, name, content, summary } = req.body;
 		school.link = link;
 		school.name = name;
 		school.content = content;
+		school.summary = summary;
 		await school.save();
 		res.send(school);
 	} catch (err) {
