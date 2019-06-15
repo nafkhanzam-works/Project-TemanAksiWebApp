@@ -40,8 +40,8 @@ router.use('/register', (req, res) => {
 router.use('/me', (req, res) => {
 	res.send(req.user);
 });
-router.use('/donate', (req, res) => {
-    require('../utils/email').sendDonationEmail(req.body.email, req.body.name, req.body.school, req.user, (err, emailResponse) => {
+router.use('/donate', async (req, res) => {
+    require('../utils/email').sendDonationEmail(req.body.email, req.body.name, await School.findOne({ link: req.body.school }), req.user, (err, emailResponse) => {
         if (log.res(res, 500, err)) return;
         res.send({ emailResponse, success: true });
     });
