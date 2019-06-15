@@ -19,15 +19,16 @@ exports.sendDonationEmail = function(targetEmail, name, school, user, callback) 
 			var codeStr = code.toString();
 			while (codeStr.length < 3)
 				codeStr = '0' + codeStr;
-			Donate.create({ email: targetEmail, name, schoolId: school._id, userId: user ? user._id : null, code }, (err, res) => {
-				if (err) return callback(err);
-				require('gmail-send')({
-					user: 'nafkhanalzamzami@gmail.com',
-					pass: 'Shokibul123-',
-					to: targetEmail,
-					subject: '[Teman Aksi] Prosedur Donasi ke ' + school.name + '.',
-					html: utils.replaceAll(html, '\\$\\{code\\}', codeStr)
-				})({}, (err, res) => callback(err, res));
+			const donation = new Donate({ email: targetEmail, name, schoolId: school._id, userId: user ? user._id : null, code });
+			require('gmail-send')({
+				user: 'nafkhanalzamzami@gmail.com',
+				pass: 'Shokibul123-',
+				to: targetEmail,
+				subject: '[Teman Aksi] Prosedur Donasi ke ' + school.name + '.',
+				html: utils.replaceAll(html, '\\$\\{code\\}', codeStr)
+			})({}, (err, res) => {
+				if (log.res(res, 400, err)) return;
+				donation.save((err, res) => callback(err, res));
 			});
 		});
 	});
