@@ -31,8 +31,12 @@ export default function(props) {
 				style={{ width: 200, height: 150 }}
 			/>
 			<div style={{ marginLeft: 20 }}>
-				<Link to={'/school/' + school.link} component={RouterLink} variant='h5'>
-						<b>{school.name}</b>
+				<Link
+					to={'/school/' + school.link}
+					component={RouterLink}
+					variant="h5"
+				>
+					<b>{school.name}</b>
 				</Link>
 				{school.summary ? (
 					<Typography>{school.summary}</Typography>
