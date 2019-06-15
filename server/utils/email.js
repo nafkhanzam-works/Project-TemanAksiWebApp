@@ -1,5 +1,6 @@
 const Donate = require('../models/Donate')
 const utils = require('./utils')
+const log = require('./log')
 
 exports.sendDonationEmail = function(targetEmail, name, school, user, callback) {
 	require('fs').readFile('server/templates/donateResponse.txt', 'utf8', (err, html) => {
@@ -27,7 +28,7 @@ exports.sendDonationEmail = function(targetEmail, name, school, user, callback) 
 				subject: '[Teman Aksi] Prosedur Donasi ke ' + school.name + '.',
 				html: utils.replaceAll(html, '\\$\\{code\\}', codeStr)
 			})({}, (err, res) => {
-				if (log.res(res, 400, err)) return;
+				if (err) return callback(err);
 				donation.save((err, res) => callback(err, res));
 			});
 		});
