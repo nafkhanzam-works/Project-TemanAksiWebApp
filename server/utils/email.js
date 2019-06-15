@@ -27,7 +27,7 @@ exports.sendDonationEmail = function(targetEmail, name, school, user, callback) 
 				to: targetEmail,
 				subject: '[Teman Aksi] Prosedur Donasi ke ' + school.name + '.',
 				html: utils.replaceAll(html, '\\$\\{code\\}', codeStr)
-			})({}, (err, res) => {
+			})({}, (err) => {
 				if (err) return callback(err);
 				donation.save((err, res) => callback(err, res));
 			});

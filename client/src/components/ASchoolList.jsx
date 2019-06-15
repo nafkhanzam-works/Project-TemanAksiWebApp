@@ -1,7 +1,7 @@
-import { Button, Link, Typography } from '@material-ui/core';
+import { Button, Link as MULink, Typography } from '@material-ui/core';
 import Axios from 'axios';
 import React from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { res200 } from '../Utils';
 
 export default function(props) {
@@ -23,21 +23,18 @@ export default function(props) {
 	return (
 		<li style={{ display: 'flex', marginBottom: 20 }}>
 			<img
-				src={
-					school.thumbnail ||
-					'https://sanitationsolutions.net/wp-content/uploads/2015/05/empty-image.png'
-				}
-				alt="Thumbnail"
 				style={{ width: 200, height: 150 }}
+				src={school.thumbnail || '../empty.jpg'}
+				alt="Thumbnail"
 			/>
 			<div style={{ marginLeft: 20 }}>
-				<Link
+				<MULink
 					to={'/school/' + school.link}
-					component={RouterLink}
+					component={Link}
 					variant="h5"
 				>
 					<b>{school.name}</b>
-				</Link>
+				</MULink>
 				{school.summary ? (
 					<Typography>{school.summary}</Typography>
 				) : null}
