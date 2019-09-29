@@ -38,7 +38,10 @@ router.use('/register', (req, res) => {
 	});
 });
 router.use('/me', (req, res) => {
-	res.send(req.user);
+	if (!req.user)
+		res.send('You\'re not loggedin');
+	else
+		res.send(req.user);
 });
 router.use('/donate', async (req, res) => {
     require('../utils/email').sendDonationEmail(req.body.email, req.body.name, await School.findById(req.body.schoolId), req.user, (err, emailResponse) => {
